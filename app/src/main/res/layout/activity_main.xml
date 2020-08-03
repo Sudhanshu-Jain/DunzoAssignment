@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout
+<layout xmlns:tools="http://schemas.android.com/tools"
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    >
+    xmlns:app="http://schemas.android.com/apk/res-auto">
     <data>
         <variable name="viewModel" type="com.example.dunzotest.viewmodel.SearchViewModel"/>
     </data>
@@ -48,6 +47,7 @@
                 android:layout_marginLeft="@dimen/dp_28"
                 android:layout_marginRight="@dimen/dp_28"
                 android:hint="Search"
+                android:textColor="@color/color_ffffff"
                 android:singleLine="true"
                 android:imeOptions="actionDone"
                 android:id="@+id/fr_search_edit"
@@ -57,12 +57,13 @@
             <ImageView
                 android:layout_width="@dimen/dp_24"
                 android:layout_height="@dimen/dp_24"
-                app:srcCompat="@drawable/ic_search_audio"
-                android:id="@+id/fr_iv_search_audio"
+                app:srcCompat="@drawable/cross_white"
+                android:id="@+id/fr_iv_search_cross"
                 android:layout_alignParentRight="true"
                 android:layout_marginEnd="@dimen/dp_2"
                 android:layout_marginTop="@dimen/dp_2"
                 android:layout_marginRight="@dimen/dp_2"
+                android:onClick="@{() -> viewModel.onCrossClick()}"
                 />
 
 
@@ -88,21 +89,24 @@
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:id="@+id/progress"
+            android:visibility="gone"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             />
 
-<!--        <FrameLayout-->
-<!--            android:id="@+id/fr_fl_error_screen"-->
-<!--            android:layout_width="0dp"-->
-<!--            android:layout_height="0dp"-->
-<!--            app:layout_constraintBottom_toBottomOf="parent"-->
-<!--            app:layout_constraintTop_toBottomOf="@+id/fr_view"-->
-<!--            app:layout_constraintEnd_toEndOf="parent"-->
-<!--            app:layout_constraintStart_toStartOf="parent"-->
-<!--            style="@style/SearchErrorScreenLayoutStyle"/>-->
+        <TextView
+            android:id="@+id/empty_txt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:text="@string/enter_3"
+            android:textColor="@color/color_ffffff"
+            />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
