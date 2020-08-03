@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    >
+    <data>
+        <variable name="viewModel" type="com.example.dunzotest.viewmodel.SearchViewModel"/>
+    </data>
+    <androidx.constraintlayout.widget.ConstraintLayout android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/color_0d0620">
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="@dimen/dp_56"
+            android:id="@+id/fr_view"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:background="@color/color_2c2542"/>
+
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_height="@dimen/dp_28"
+            android:id="@+id/fr_search_layout"
+            app:layout_constraintStart_toStartOf="@+id/fr_view"
+            app:layout_constraintEnd_toEndOf="@+id/fr_view"
+            app:layout_constraintTop_toTopOf="@+id/fr_view"
+            android:layout_marginTop="@dimen/dp_16"
+            android:background="@drawable/search_bg"
+            android:layout_marginEnd="@dimen/dp_24"
+            android:layout_marginStart="@dimen/dp_24"
+            >
+            <ImageView
+                android:layout_width="@dimen/dp_24"
+                android:layout_height="@dimen/dp_24"
+                app:srcCompat="@drawable/ic_search"
+                android:id="@+id/fr_iv_search_img"
+                android:layout_marginLeft="@dimen/dp_2"
+                android:layout_alignParentLeft="true"
+                android:tint="@color/color_ffffff"
+                android:layout_centerVertical="true"
+                />
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp_28"
+                android:layout_marginLeft="@dimen/dp_28"
+                android:layout_marginRight="@dimen/dp_28"
+                android:hint="Search"
+                android:singleLine="true"
+                android:imeOptions="actionDone"
+                android:id="@+id/fr_search_edit"
+                android:background="@drawable/search_bg"
+                android:textSize="16sp"/>
+
+            <ImageView
+                android:layout_width="@dimen/dp_24"
+                android:layout_height="@dimen/dp_24"
+                app:srcCompat="@drawable/ic_search_audio"
+                android:id="@+id/fr_iv_search_audio"
+                android:layout_alignParentRight="true"
+                android:layout_marginEnd="@dimen/dp_2"
+                android:layout_marginTop="@dimen/dp_2"
+                android:layout_marginRight="@dimen/dp_2"
+                />
+
+
+        </RelativeLayout>
+
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:id="@+id/search_grid"
+            android:layout_marginStart="@dimen/dp_20"
+            android:layout_marginEnd="@dimen/dp_20"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior"
+            app:layout_constraintTop_toBottomOf="@+id/fr_search_layout"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_marginTop="@dimen/dp_32"/>
+
+
+
+        <ProgressBar
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:id="@+id/progress"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            />
+
+<!--        <FrameLayout-->
+<!--            android:id="@+id/fr_fl_error_screen"-->
+<!--            android:layout_width="0dp"-->
+<!--            android:layout_height="0dp"-->
+<!--            app:layout_constraintBottom_toBottomOf="parent"-->
+<!--            app:layout_constraintTop_toBottomOf="@+id/fr_view"-->
+<!--            app:layout_constraintEnd_toEndOf="parent"-->
+<!--            app:layout_constraintStart_toStartOf="parent"-->
+<!--            style="@style/SearchErrorScreenLayoutStyle"/>-->
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
