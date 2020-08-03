@@ -1,4 +1,4 @@
-package com.example.dunzotest
+package com.example.dunzotest.ui
 
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager

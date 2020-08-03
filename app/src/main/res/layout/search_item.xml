@@ -7,11 +7,13 @@
     <ImageView
         android:layout_width="match_parent"
         android:layout_height="120dp"
-        android:id="@+id/img_search" />
+        android:id="@+id/img_search"
+        android:adjustViewBounds="true"/>
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="@dimen/dp_32"
+        android:textColor="@color/color_ffffff"
         android:id="@+id/search_txt"/>
 
 </LinearLayout>

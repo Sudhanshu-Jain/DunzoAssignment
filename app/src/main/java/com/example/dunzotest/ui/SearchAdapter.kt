@@ -1,10 +1,12 @@
-package com.example.dunzotest
+package com.example.dunzotest.ui
 
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.example.dunzotest.R
+import com.example.dunzotest.autoNotify
 import com.example.dunzotest.data.PhotoModel
 import java.lang.StringBuilder
 import kotlin.properties.Delegates
@@ -25,10 +27,6 @@ class SearchAdapter() : RecyclerView.Adapter<SearchViewHolder>() {
 
     override fun getItemCount(): Int {
         return items.size
-    }
-
-    private fun getItem(position: Int): PhotoModel{
-        return items[position]
     }
 
     override fun onBindViewHolder(holder: SearchViewHolder, position: Int) {

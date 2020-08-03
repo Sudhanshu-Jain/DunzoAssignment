@@ -1,29 +1,28 @@
-package com.example.dunzotest
+package com.example.dunzotest.ui
 
-import android.app.Activity
 import android.content.Context
-import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
+import android.content.res.Configuration
+import android.net.ConnectivityManager
 import android.os.Bundle
-import android.speech.RecognizerIntent
 import android.util.Log
 import android.view.MotionEvent
 import android.view.View
 import android.view.inputmethod.InputMethodManager
+import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
-import androidx.databinding.ViewDataBinding
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.dunzotest.api.ApiInterface
+import com.example.dunzotest.R
 import com.example.dunzotest.data.FlickrDataModel
 import com.example.dunzotest.databinding.ActivityMainBinding
 import com.example.dunzotest.viewmodel.SearchViewModel
 import com.jakewharton.rxbinding2.widget.RxTextView
 import io.reactivex.android.schedulers.AndroidSchedulers
 import java.util.concurrent.TimeUnit
-import javax.inject.Inject
+
 
 class MainActivity : AppCompatActivity() {
 
@@ -32,18 +31,12 @@ class MainActivity : AppCompatActivity() {
     val layoutManager: GridLayoutManager by lazy { getGridLayoutManager() }
     lateinit var adapter: SearchAdapter
     var scrollListener: EndlessScrollingListener? = null
+    var scrolledPosition = 0
 
     companion object{
         const val TAG = "MainActivity"
     }
-
-
-
     var searchedString : String = ""
-    var voiceSearch : Boolean  = false
-    var voiceSearchQuery : String = ""
-
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -64,7 +57,7 @@ class MainActivity : AppCompatActivity() {
 
 
                 if (query.trim().length < 3) {
-                    searchedString = ""
+                    searchedString = query.trim()
                     searchViewModel.setZeroResult()
                     scrollListener?.resetState()
 
@@ -76,7 +69,11 @@ class MainActivity : AppCompatActivity() {
 
                     scrollListener?.resetState()
 
-                    searchViewModel.getSearchResult(searchedString)
+                    if(isInternetAvailable(this))
+                        searchViewModel.getSearchResult(searchedString)
+                    else{
+                        Toast.makeText(this, "Internet Connection Required", Toast.LENGTH_SHORT).show()
+                    }
 
                     return@map
                 }
@@ -95,12 +92,11 @@ class MainActivity : AppCompatActivity() {
 
             override fun onScroll(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 super.onScroll(recyclerView, dx, dy)
+                scrolledPosition = dy
 
             }
         }
         setRecyclerAdapter()
-
-
         observeLiveData()
 
         binder.searchGrid.setOnTouchListener(object : View.OnTouchListener{
@@ -144,16 +140,31 @@ class MainActivity : AppCompatActivity() {
         })
     }
 
+    override fun onSaveInstanceState(state: Bundle) {
+        super.onSaveInstanceState(state)
+        state.putInt("position", scrolledPosition) // get current recycle view position here.
+        state.putString("query", searchedString)
+    }
+
+    // Restore list state from bundle
+    override fun onRestoreInstanceState(state: Bundle) {
+        super.onRestoreInstanceState(state)
+        scrolledPosition = state.getInt("position")
+        searchedString = state.getString("query") ?: ""
+        binder.frSearchEdit.setText(searchedString)
+        binder.searchGrid.smoothScrollBy(0,scrolledPosition)
+    }
     private fun setRecyclerAdapter() {
         binder.searchGrid.layoutManager = layoutManager
         adapter = SearchAdapter()
         binder.searchGrid.adapter = adapter
         binder.searchGrid.addOnScrollListener(scrollListener as EndlessScrollingListener)
-//        adapter = SearchAdapter(this,viewModel.getRecentSearchItem(),this)
     }
 
     private fun inflateView(savedInstanceState: Bundle?) {
-        binder = DataBindingUtil.setContentView(this, R.layout.activity_main) as ActivityMainBinding
+        binder = DataBindingUtil.setContentView(this,
+            R.layout.activity_main
+        ) as ActivityMainBinding
         binder.lifecycleOwner = this
         binder.viewModel = searchViewModel
     }
@@ -161,7 +172,7 @@ class MainActivity : AppCompatActivity() {
 
     fun getGridLayoutManager(): GridLayoutManager {
 
-        val gridLayoutManager = GridLayoutManager(this, 2)
+        val gridLayoutManager = GridLayoutManager(this, if(resources.configuration.orientation == Configuration.ORIENTATION_PORTRAIT) 2 else 3)
         return gridLayoutManager
     }
 
@@ -176,5 +187,22 @@ class MainActivity : AppCompatActivity() {
             }
 
         }
+    }
+
+    fun isInternetAvailable(context: Context): Boolean
+    {
+        try {
+            val conn = context.applicationContext
+                .getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+            val networkInfo = conn.activeNetworkInfo
+            if (networkInfo != null) {
+                return networkInfo.isConnected
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
+            return false
+        }
+
+        return false
     }
 }
