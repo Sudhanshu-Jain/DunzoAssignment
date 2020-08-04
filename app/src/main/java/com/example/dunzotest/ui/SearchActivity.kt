@@ -24,7 +24,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import java.util.concurrent.TimeUnit
 
 
-class MainActivity : AppCompatActivity() {
+class SearchActivity : AppCompatActivity() {
 
     private lateinit var searchViewModel: SearchViewModel
     lateinit var binder: ActivityMainBinding
@@ -72,7 +72,9 @@ class MainActivity : AppCompatActivity() {
                     if(isInternetAvailable(this))
                         searchViewModel.getSearchResult(searchedString)
                     else{
-                        Toast.makeText(this, "Internet Connection Required", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(this, getString(R.string.internet_required), Toast.LENGTH_SHORT).show()
+                        binder.progress.visibility = View.GONE
+
                     }
 
                     return@map
@@ -101,7 +103,7 @@ class MainActivity : AppCompatActivity() {
 
         binder.searchGrid.setOnTouchListener(object : View.OnTouchListener{
             override fun onTouch(p0: View?, p1: MotionEvent?): Boolean {
-                hideKeyboard(p0, this@MainActivity)
+                hideKeyboard(p0, this@SearchActivity)
                 return false
             }
 
@@ -114,21 +116,27 @@ class MainActivity : AppCompatActivity() {
         searchViewModel.getFlickrResponseData().observe(this, object : Observer<FlickrDataModel>{
             override fun onChanged(data: FlickrDataModel?) {
                data?.let {
-                   binder.emptyTxt.visibility = View.GONE
-                   binder.searchGrid.visibility = View.VISIBLE
-                   if(it.page == 1){
-                       adapter.items = it.photo
-                       adapter.notifyDataSetChanged()
-                   }
-                   else{
-                       adapter.items += it.photo
-                       adapter.notifyDataSetChanged()
+                   if(it.photo.size > 0) {
+                       binder.emptyTxt.visibility = View.GONE
+                       binder.searchGrid.visibility = View.VISIBLE
+                       if (it.page == 1) {
+                           adapter.items = it.photo
+                           adapter.notifyDataSetChanged()
+                       } else {
+                           adapter.items += it.photo
+                           adapter.notifyDataSetChanged()
+                       }
+                   }else{
+                       binder.emptyTxt.text = getString(R.string.no_result)
+                       binder.searchGrid.visibility = View.GONE
+                       binder.emptyTxt.visibility = View.VISIBLE
                    }
 
 
                }
                    ?: kotlin.run {
                        binder.searchGrid.visibility = View.GONE
+                       binder.emptyTxt.text = getString(R.string.enter_3)
                        binder.emptyTxt.visibility = View.VISIBLE
                        binder.frIvSearchCross.visibility = View.GONE
                        binder.frSearchEdit.setText("")

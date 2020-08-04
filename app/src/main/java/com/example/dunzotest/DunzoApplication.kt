@@ -15,17 +15,8 @@ class DunzoApplication : Application() {
 
 
     private fun initApplication() {
-        /**
-         *  FIXME: move to latest DI later , right nor most of them are commented
-         */
-        //DaggerSVAppComponent.create()
-        //  .inject(this);
+
         appComponent = DaggerAppComponent.builder().appModule(AppModule(this)).retrofitModule(RetrofitModule()).build()
-
-
-
-        //By default logs are disabled
-
 
     }
 

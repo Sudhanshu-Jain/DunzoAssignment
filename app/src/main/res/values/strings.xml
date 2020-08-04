@@ -1,4 +1,6 @@
 <resources>
     <string name="app_name">DunzoTest</string>
     <string name="enter_3">Enter atleast 3 chars to run query</string>
+    <string name="no_result">No Result Found</string>
+    <string name="internet_required">Internet Connection Required</string>
 </resources>
