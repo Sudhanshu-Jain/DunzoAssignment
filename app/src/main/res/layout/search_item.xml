@@ -12,8 +12,10 @@
 
     <TextView
         android:layout_width="match_parent"
-        android:layout_height="@dimen/dp_32"
+        android:layout_height="@dimen/dp_48"
         android:textColor="@color/color_ffffff"
+        android:maxLines="2"
+        android:ellipsize="end"
         android:id="@+id/search_txt"/>
 
 </LinearLayout>
